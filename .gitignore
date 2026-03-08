@@ -1,0 +1,6 @@
+# backend
+bin/
+obj/
+
+# frontend
+node_modules/
