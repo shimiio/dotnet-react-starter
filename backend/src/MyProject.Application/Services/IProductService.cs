@@ -1,3 +1,7 @@
+using MyProject.Application.DTOs;
+
+namespace MyProject.Application.Services;
+
 public interface IProductService
 {
     // GET - get all products

@@ -1,3 +1,7 @@
+using MyProject.Application.Interfaces;
+using MyProject.Infrastructure.Repositories;
+using MyProject.Application.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 

@@ -1,3 +1,8 @@
+using MyProject.Application.Interfaces;
+using MyProject.Domain.Models;
+
+namespace MyProject.Infrastructure.Repositories;
+
 public class InMemoryProductRepository : IProductRepository
 {
     private readonly List<Product> _product = new();

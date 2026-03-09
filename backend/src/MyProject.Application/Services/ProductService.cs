@@ -1,3 +1,9 @@
+using MyProject.Application.DTOs;
+using MyProject.Application.Interfaces;
+using MyProject.Domain.Models;
+
+namespace MyProject.Application.Services;
+
 public class ProductService : IProductService
 {
     private readonly IProductRepository _repo;

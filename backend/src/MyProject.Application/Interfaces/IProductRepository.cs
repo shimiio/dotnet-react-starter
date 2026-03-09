@@ -1,3 +1,7 @@
+using MyProject.Domain.Models;
+
+namespace MyProject.Application.Interfaces;
+
 public interface IProductRepository
 {
     // GET - get all products
