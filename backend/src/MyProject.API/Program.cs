@@ -38,3 +38,5 @@ if (app.Environment.IsDevelopment())
 app.UseCors("ReactApp");
 app.MapControllers();
 app.Run();
+
+public partial class Program { }
