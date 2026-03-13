@@ -31,7 +31,7 @@ export async function createProduct(
 // DELETE - delete product by id
 export async function deleteProduct(id: number): Promise<void> {
   const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "Delete",
+    method: "DELETE",
   });
 
   if (!response.ok) throw new Error("Error deleting product");
