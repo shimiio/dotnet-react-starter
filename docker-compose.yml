@@ -9,7 +9,44 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: myproject_api
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=myproject;Username=postgres;Password=postgres"
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:5158"
+    ports:
+      - "5158:5158"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: myproject_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/vite.config.ts:/app/vite.config.ts
+    depends_on:
+      - api
 
 volumes:
   postgres_data:
