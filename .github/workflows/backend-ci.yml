@@ -1,0 +1,40 @@
+name: Backend CI
+
+# When to launch
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**" # Only if the backend has changed
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "backend/**"
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # GitHub virtual machine
+
+    steps:
+      # Step 1 - Clone the repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2 - Install .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      # Step 3 - Restore Dependencies
+      - name: Restore dependencies
+        run: dotnet restore backend/
+
+      # Step 4 - Build the project
+      - name: Build
+        run: dotnet build backend/ --no-restore --configuration Release
+
+      # Step 5 - Run unit tests
+      - name: Run unit tests
+        run: dotnet test backend/tests/MyProject.UnitTests --no-restore --verbosity normal
