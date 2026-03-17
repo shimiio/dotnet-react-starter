@@ -5,17 +5,17 @@ namespace MyProject.Application.Interfaces;
 public interface IProductRepository
 {
     // GET - get all products
-    IEnumerable<Product> GetAll();
+    Task<IEnumerable<Product>> GetAllAsync();
 
     // GET - get product by id 
-    Product? GetById(int id);
+    Task<Product?> GetByIdAsync(int id);
 
     // POST - create product
-    Product Create(Product product);
+    Task<Product> CreateAsync(Product product);
 
     // PUT - update product by id
-    Product? Update(int id, Product updated);
+    Task<Product?> UpdateAsync(int id, Product updated);
 
     // DELETE - delete product by id
-    bool Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

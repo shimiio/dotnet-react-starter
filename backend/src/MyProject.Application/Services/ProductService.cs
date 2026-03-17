@@ -14,20 +14,21 @@ public class ProductService : IProductService
     }
 
     // GET - get all products
-    public IEnumerable<ProductDto> GetAll()
+    public async Task<IEnumerable<ProductDto>> GetAllAsync()
     {
-        return _repo.GetAll().Select(ToDto);
+        var products = await _repo.GetAllAsync();
+        return products.Select(ToDto);
     }
 
     // GET - get product by id
-    public ProductDto? GetById(int id)
+    public async Task<ProductDto?> GetByIdAsync(int id)
     {
-        var product = _repo.GetById(id);
+        var product = await _repo.GetByIdAsync(id);
         return product is null ? null : ToDto(product);
     }
 
     // POST - create product
-    public ProductDto Create(CreateProductDto dto)
+    public async Task<ProductDto> CreateAsync(CreateProductDto dto)
     {
         var product = new Product
         {
@@ -35,13 +36,13 @@ public class ProductService : IProductService
             Price = dto.Price
         };
 
-        var created = _repo.Create(product);
+        var created = await _repo.CreateAsync(product);
 
         return ToDto(created);
     }
 
     // PUT - update product by id
-    public ProductDto? Update(int id, UpdateProductDto dto)
+    public async Task<ProductDto?> UpdateAsync(int id, UpdateProductDto dto)
     {
         var product = new Product
         {
@@ -49,12 +50,15 @@ public class ProductService : IProductService
             Price = dto.Price
         };
 
-        var updated = _repo.Update(id, product);
+        var updated = await _repo.UpdateAsync(id, product);
         return updated is null ? null : ToDto(updated);
     }
 
     // DELETE - delete product by id
-    public bool Delete(int id) => _repo.Delete(id);
+    public async Task<bool> DeleteAsync(int id)
+    {
+        return await _repo.DeleteAsync(id);
+    }
 
     private static ProductDto ToDto(Product product) => new ProductDto
     {

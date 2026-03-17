@@ -15,47 +15,47 @@ public class PostgresProductRepository : IProductRepository
     }
 
     // GET - get all products
-    public IEnumerable<Product> GetAll()
+    public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return _db.Products.AsNoTracking().ToList();
+        return await _db.Products.AsNoTracking().ToListAsync();
     }
 
     // GET - get product by id
-    public Product? GetById(int id)
+    public async Task<Product?> GetByIdAsync(int id)
     {
-        return _db.Products.Find(id);
+        return await _db.Products.FindAsync(id);
     }
 
     // POST - create product
-    public Product Create(Product product)
+    public async Task<Product> CreateAsync(Product product)
     {
         _db.Products.Add(product);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         return product;
     }
 
     // PUT - update product by id
-    public Product? Update(int id, Product updated)
+    public async Task<Product?> UpdateAsync(int id, Product updated)
     {
-        var existing = _db.Products.Find(id);
+        var existing = await _db.Products.FindAsync(id);
         if (existing is null) return null;
 
         existing.Name = updated.Name;
         existing.Price = updated.Price;
 
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return existing;
     }
 
     // DELETE - delete product by id
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var existing = _db.Products.Find(id);
+        var existing = await _db.Products.FindAsync(id);
         if (existing is null) return false;
 
         _db.Products.Remove(existing);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return true;
     }
 }

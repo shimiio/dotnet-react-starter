@@ -9,38 +9,39 @@ public class InMemoryProductRepository : IProductRepository
     private static int _nextId = 1;
 
     // GET - get all products
-    public IEnumerable<Product> GetAll() => _product;
+    public Task<IEnumerable<Product>> GetAllAsync()
+        => Task.FromResult<IEnumerable<Product>>(_product);
 
     // GET - get product by id
-    public Product? GetById(int id) =>
-        _product.FirstOrDefault(p => p.Id == id);
+    public Task<Product?> GetByIdAsync(int id)
+        => Task.FromResult(_product.FirstOrDefault(p => p.Id == id));
 
     // POST - create product
-    public Product Create(Product product)
+    public Task<Product> CreateAsync(Product product)
     {
         product.Id = _nextId++;
         _product.Add(product);
-        return product;
+        return Task.FromResult(product);
     }
 
     // PUT - update product by id
-    public Product? Update(int id, Product updated)
+    public Task<Product?> UpdateAsync(int id, Product updated)
     {
         var existing = _product.FirstOrDefault(p => p.Id == id);
-        if (existing is null) return null;
+        if (existing is null) return Task.FromResult<Product?>(null);
 
         existing.Name = updated.Name;
         existing.Price = updated.Price;
-        return existing;
+        return Task.FromResult<Product?>(existing);
     }
 
     // DELETE - delete product by id
-    public bool Delete(int id)
+    public Task<bool> DeleteAsync(int id)
     {
         var product = _product.FirstOrDefault(p => p.Id == id);
-        if (product is null) return false;
+        if (product is null) return Task.FromResult(false);
 
         _product.Remove(product);
-        return true;
+        return Task.FromResult(true);
     }
 }

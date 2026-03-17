@@ -5,17 +5,17 @@ namespace MyProject.Application.Services;
 public interface IProductService
 {
     // GET - get all products
-    IEnumerable<ProductDto> GetAll();
+    Task<IEnumerable<ProductDto>> GetAllAsync();
 
     // GET - get product by id 
-    ProductDto? GetById(int id);
+    Task<ProductDto?> GetByIdAsync(int id);
 
     // POST - create product
-    ProductDto Create(CreateProductDto Dto);
+    Task<ProductDto> CreateAsync(CreateProductDto dto);
 
     // PUT - update product by id
-    ProductDto? Update(int id, UpdateProductDto dto);
+    Task<ProductDto?> UpdateAsync(int id, UpdateProductDto dto);
 
     // DELETE - delete product by id
-    bool Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

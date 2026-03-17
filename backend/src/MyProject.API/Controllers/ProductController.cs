@@ -16,36 +16,41 @@ public class ProductsController : ControllerBase
 
     // GET /api/products - get all products
     [HttpGet]
-    public IActionResult GetAll() => Ok(_service.GetAll());
+    public async Task<IActionResult> GetAll()
+    {
+        var products = await _service.GetAllAsync();
+        return Ok(products);
+    }
 
     // GET /api/products/1 - get product by id
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var product = _service.GetById(id);
+        var product = await _service.GetByIdAsync(id);
         return product is null ? NotFound() : Ok(product);
     }
 
     // POST /api/product/ - create product
     [HttpPost]
-    public IActionResult Create([FromBody] CreateProductDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {
-        var created = _service.Create(dto);
+        var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     // PUT /api/product/1 - update product by id
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] UpdateProductDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
     {
-        var result = _service.Update(id, dto);
+        var result = await _service.UpdateAsync(id, dto);
         return result is null ? NotFound() : Ok(result);
     }
 
     // DELETE /api/product/1 - delete product by id
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        return _service.Delete(id) ? NoContent() : NotFound();
+        var deleted = await _service.DeleteAsync(id);
+        return deleted ? NoContent() : NotFound();
     }
 }
